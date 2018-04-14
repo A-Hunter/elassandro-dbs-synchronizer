@@ -1,12 +1,16 @@
 package com.databases.synchronizer.entity;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 @Table("person")
-public class Person {
+@Document(indexName = "persons", type = "person")
+public class Person extends Entity{
 
-    @PrimaryKey
+    @PrimaryKey("person_id")
+    @Id
     private Integer personId;
 
     private String firstName;
@@ -16,6 +20,14 @@ public class Person {
     private Integer age;
 
     private String occupation;
+
+    public Person(Integer personId, String firstName, String lastName, Integer age, String occupation) {
+        this.personId = personId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.occupation = occupation;
+    }
 
     public Integer getPersonId() {
         return personId;

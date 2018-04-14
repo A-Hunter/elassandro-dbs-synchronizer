@@ -1,24 +1,40 @@
 package com.databases.synchronizer.repository.implemantation;
 
-import com.databases.synchronizer.entity.Person;
+import com.databases.synchronizer.entity.Entity;
 import com.databases.synchronizer.repository.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.cassandra.core.CassandraOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
 
 import java.util.List;
 
+@org.springframework.stereotype.Repository
 public class CassandraRepository implements Repository {
 
+    @Autowired
+    CassandraOperations cassandraOperations;
+
+    @Autowired
+    ElasticsearchOperations elasticsearchOperations;
+
     @Override
-    public Object create(Object person) {
-        return null;
+    public Entity create(Entity entity) {
+        cassandraOperations.insert(entity);
+        IndexQuery indexQuery = new IndexQuery();
+        indexQuery.setObject(entity);
+        elasticsearchOperations.index(indexQuery);
+        return entity;
     }
 
     @Override
-    public Object update(Object person) {
-        return null;
+    public Entity update(Entity entity) {
+        cassandraOperations.update(entity);
+        return entity;
     }
 
     @Override
-    public Object getById(Person person) {
+    public Entity getById(String id) {
         return null;
     }
 
@@ -28,7 +44,7 @@ public class CassandraRepository implements Repository {
     }
 
     @Override
-    public void delete(Person person) {
+    public void delete(Entity entity) {
 
     }
 }

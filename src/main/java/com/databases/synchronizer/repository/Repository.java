@@ -1,14 +1,15 @@
 package com.databases.synchronizer.repository;
 
+import com.databases.synchronizer.entity.Entity;
 import com.databases.synchronizer.entity.Person;
 
 import java.util.List;
 
-public interface Repository<T> {
+public interface Repository<T extends Entity> {
 
-    T create(T person);
-    T update(T person);
-    T getById(Person person);
+    T create(T entity);
+    T update(T entity);
+    T getById(String id);
     List<T> getAll();
-    void delete(Person person);
+    void delete(Entity entity);
 }

@@ -1,6 +1,6 @@
 package com.databases.synchronizer.repository.implemantation;
 
-import com.databases.synchronizer.entity.Person;
+import com.databases.synchronizer.entity.Entity;
 import com.databases.synchronizer.repository.Repository;
 
 import java.util.List;
@@ -8,17 +8,17 @@ import java.util.List;
 public class ElasticsearchRepository implements Repository {
 
     @Override
-    public Object create(Object person) {
+    public Entity create(Entity entity) {
         return null;
     }
 
     @Override
-    public Object update(Object person) {
+    public Entity update(Entity entity) {
         return null;
     }
 
     @Override
-    public Object getById(Person person) {
+    public Entity getById(String id) {
         return null;
     }
 
@@ -28,7 +28,7 @@ public class ElasticsearchRepository implements Repository {
     }
 
     @Override
-    public void delete(Person person) {
+    public void delete(Entity entity) {
 
     }
 }
