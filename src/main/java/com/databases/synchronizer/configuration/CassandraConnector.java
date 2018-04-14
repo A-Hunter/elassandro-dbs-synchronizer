@@ -1,30 +1,46 @@
 package com.databases.synchronizer.configuration;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
+import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
+import org.springframework.data.cassandra.core.mapping.BasicCassandraMappingContext;
+import org.springframework.data.cassandra.core.mapping.CassandraMappingContext;
 
-public class CassandraConnector {
+@Configuration
+public class CassandraConnector extends AbstractCassandraConfiguration {
 
-    private Cluster cluster;
+    static Logger LOGGER = Logger.getLogger(CassandraConnector.class.getName());
 
-    private Session session;
+    @Value("${cassandra.keyspace}")
+    private String keyspace;
 
-    public void connect(String node, Integer port) {
-        Cluster.Builder b = Cluster.builder().addContactPoint(node);
-        if (port != null) {
-            b.withPort(port);
-        }
-        cluster = b.build();
+    @Value("${cassandra.contactpoints}")
+    private String contactPoints;
 
-        session = cluster.connect();
+    @Value("${cassandra.port}")
+    private String port;
+
+    @Override
+    public String getKeyspaceName() {
+        return keyspace;
     }
 
-    public Session getSession() {
-        return this.session;
+    @Override
+    @Bean
+    public CassandraClusterFactoryBean cluster() {
+        final CassandraClusterFactoryBean cluster = new CassandraClusterFactoryBean();
+        cluster.setContactPoints(contactPoints);
+        cluster.setPort(Integer.parseInt(port));
+        LOGGER.info("Cluster created with contact points [" + contactPoints + "] " + "& port [" + port + "].");
+        return cluster;
     }
 
-    public void close() {
-        session.close();
-        cluster.close();
+    @Override
+    @Bean
+    public CassandraMappingContext cassandraMapping() throws ClassNotFoundException {
+        return new BasicCassandraMappingContext();
     }
 }
