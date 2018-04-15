@@ -9,10 +9,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Document(indexName = "persons", type = "person")
 public class Person extends Entity{
 
-    @PrimaryKey("person_id")
-    @Id
-    private Integer personId;
-
     private String firstName;
 
     private String lastName;
@@ -21,21 +17,22 @@ public class Person extends Entity{
 
     private String occupation;
 
-    public Person(Integer personId, String firstName, String lastName, Integer age, String occupation) {
-        this.personId = personId;
+    public Person(String personId, String firstName, String lastName, Integer age, String occupation) {
+//        this.personId = personId;
+        super(personId);
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.occupation = occupation;
     }
 
-    public Integer getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(Integer personId) {
-        this.personId = personId;
-    }
+//    public Integer getPersonId() {
+//        return personId;
+//    }
+//
+//    public void setPersonId(Integer personId) {
+//        this.personId = personId;
+//    }
 
     public String getFirstName() {
         return firstName;

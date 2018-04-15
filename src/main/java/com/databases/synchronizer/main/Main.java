@@ -26,7 +26,8 @@ public class Main implements CommandLineRunner{
     @Override
     public void run(String... args) throws Exception {
 
-        cassandraRepository.create(new Person(1, "Isaac", "Netero", 125, "Hunter"));
+//        cassandraRepository.create(new Person("1", "Isaac", "Netero", 125, "Hunter"));
+        cassandraRepository.update(new Person("1", "Itachi", "Uchiha", 25, "Shinobi"));
 
     }
 }
