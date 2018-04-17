@@ -1,11 +1,10 @@
 package com.databases.synchronizer.repository.implemantation;
 
-import com.databases.synchronizer.entity.Entity;
 import com.databases.synchronizer.repository.Repository;
 
 import java.util.List;
 
-public class ElasticsearchRepository<T extends Entity> implements Repository<T> {
+public class ElasticsearchRepository<T> implements Repository<T> {
 
     @Override
     public T create(T entity) {
@@ -28,7 +27,7 @@ public class ElasticsearchRepository<T extends Entity> implements Repository<T> 
     }
 
     @Override
-    public void delete(Entity entity) {
+    public void delete(T entity) {
 
     }
 }

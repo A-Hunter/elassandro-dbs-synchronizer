@@ -1,7 +1,5 @@
 package com.databases.synchronizer.repository;
 
-import com.databases.synchronizer.entity.Entity;
-
 import java.util.List;
 
 public interface Repository<T> {
@@ -14,5 +12,5 @@ public interface Repository<T> {
 
     List<T> getAll();
 
-    void delete(Entity entity);
+    void delete(T entity);
 }

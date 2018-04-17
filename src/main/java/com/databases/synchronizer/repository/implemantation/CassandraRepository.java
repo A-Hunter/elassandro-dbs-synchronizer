@@ -1,20 +1,15 @@
 package com.databases.synchronizer.repository.implemantation;
 
-import com.databases.synchronizer.entity.Entity;
 import com.databases.synchronizer.repository.Repository;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.update.UpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 
 import java.util.List;
-import java.util.Map;
 
 @org.springframework.stereotype.Repository
 public class CassandraRepository<T> implements Repository<T> {
@@ -71,7 +66,7 @@ public class CassandraRepository<T> implements Repository<T> {
     }
 
     @Override
-    public void delete(Entity entity) {
+    public void delete(T entity) {
 
     }
 
