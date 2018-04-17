@@ -10,7 +10,7 @@ public interface Repository<T> {
 
     T getById(String idName, String idValue, String table, Class<T> clazz);
 
-    List<T> getAll();
+    List<T> getAll(String table, Class<T> clazz);
 
     void delete(T entity);
 }

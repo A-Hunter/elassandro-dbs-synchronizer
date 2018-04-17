@@ -22,7 +22,7 @@ public class ElasticsearchRepository<T> implements Repository<T> {
     }
 
     @Override
-    public List<T> getAll() {
+    public List<T> getAll(String table, Class<T> clazz) {
         return null;
     }
 
