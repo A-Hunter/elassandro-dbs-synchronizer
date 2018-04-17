@@ -6,9 +6,11 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 public class Entity {
 
 
-    @PrimaryKey("id")
-    @Id
+
     private String id;
+
+    public Entity() {
+    }
 
     public Entity(String id) {
         this.id = id;

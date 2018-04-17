@@ -2,11 +2,14 @@ package com.databases.synchronizer.repository.implemantation;
 
 import com.databases.synchronizer.entity.Entity;
 import com.databases.synchronizer.repository.Repository;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.querybuilder.Select;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 
@@ -14,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @org.springframework.stereotype.Repository
-public class CassandraRepository implements Repository {
+public class CassandraRepository<T> implements Repository<T> {
 
     @Autowired
     CassandraOperations cassandraOperations;
@@ -22,33 +25,44 @@ public class CassandraRepository implements Repository {
     @Autowired
     ElasticsearchOperations elasticsearchOperations;
 
+    @Autowired
+    ElasticsearchTemplate elasticsearchTemplate;
+
     @Override
-    public Entity create(Entity entity) {
+    public T create(T entity) {
         cassandraOperations.insert(entity);
         IndexQuery indexQuery = new IndexQuery();
         indexQuery.setObject(entity);
         elasticsearchOperations.index(indexQuery);
         return entity;
+
     }
 
     @Override
-    public Entity update(Entity entity) {
+    public T update(T entity) {
         cassandraOperations.update(entity);
+        IndexQuery indexQuery = new IndexQuery();
+        indexQuery.setObject(entity);
+        elasticsearchOperations.index(indexQuery);
+        /*
         UpdateQuery updateQuery = new UpdateQuery();
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> map = mapper.convertValue(entity, Map.class);
         UpdateRequest request = new UpdateRequest();
         request.doc(map);
         updateQuery.setUpdateRequest(request);
-        updateQuery.setId(entity.getId());
+//        updateQuery.setId(entity.getId());
         updateQuery.setClazz(entity.getClass());
         elasticsearchOperations.update(updateQuery);
+        */
         return entity;
     }
 
     @Override
-    public Entity getById(String id) {
-        return null;
+    public T getById(String idName, String idValue, String table, Class<T> clazz) {
+        Select select = QueryBuilder.select().from(table);
+        select.where(QueryBuilder.eq(idName, idValue));
+        return cassandraOperations.selectOne(select, clazz);
     }
 
     @Override
@@ -60,4 +74,6 @@ public class CassandraRepository implements Repository {
     public void delete(Entity entity) {
 
     }
+
+
 }

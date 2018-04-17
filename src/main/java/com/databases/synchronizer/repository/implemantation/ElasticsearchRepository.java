@@ -5,25 +5,25 @@ import com.databases.synchronizer.repository.Repository;
 
 import java.util.List;
 
-public class ElasticsearchRepository implements Repository {
+public class ElasticsearchRepository<T extends Entity> implements Repository<T> {
 
     @Override
-    public Entity create(Entity entity) {
+    public T create(T entity) {
         return null;
     }
 
     @Override
-    public Entity update(Entity entity) {
+    public T update(T entity) {
         return null;
     }
 
     @Override
-    public Entity getById(String id) {
+    public T getById(String idName, String idValue, String table, Class<T> clazz) {
         return null;
     }
 
     @Override
-    public List getAll() {
+    public List<T> getAll() {
         return null;
     }
 

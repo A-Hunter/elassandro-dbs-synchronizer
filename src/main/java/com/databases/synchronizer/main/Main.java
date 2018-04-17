@@ -3,6 +3,7 @@ package com.databases.synchronizer.main;
 
 import com.databases.synchronizer.configuration.CassandraConnector;
 import com.databases.synchronizer.configuration.ElasticsearchConnector;
+import com.databases.synchronizer.entity.Entity;
 import com.databases.synchronizer.entity.Person;
 import com.databases.synchronizer.repository.implemantation.CassandraRepository;
 import com.databases.synchronizer.repository.implemantation.ElasticsearchRepository;
@@ -27,7 +28,8 @@ public class Main implements CommandLineRunner{
     public void run(String... args) throws Exception {
 
 //        cassandraRepository.create(new Person("1", "Isaac", "Netero", 125, "Hunter"));
-        cassandraRepository.update(new Person("1", "Itachi", "Uchiha", 25, "Shinobi"));
-
+//        cassandraRepository.update(new Person("1", "Itachi", "Uchiha", 25, "Shinobi"));
+        Person person = (Person) cassandraRepository.getById("id", "1", "person", Person.class);
+        System.out.println(person.getId()+"-"+person.getFirstName()+"-"+person.getLastName()+"-"+person.getAge()+"-"+person.getOccupation());
     }
 }
