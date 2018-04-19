@@ -3,12 +3,11 @@ package com.databases.synchronizer.repository.implemantation;
 import com.databases.synchronizer.repository.Repository;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.*;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
 
 import java.util.List;
 
@@ -75,8 +74,9 @@ public class CassandraRepository<T> implements Repository<T> {
     }
 
     @Override
-    public void delete(T entity) {
-
+    public void delete(String index, String type, String id, Class<T> clazz) {
+        cassandraOperations.deleteById(id, clazz);
+        elasticsearchOperations.delete(clazz, id);
     }
 
 

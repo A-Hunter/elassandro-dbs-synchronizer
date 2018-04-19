@@ -27,7 +27,7 @@ public class ElasticsearchRepository<T> implements Repository<T> {
     }
 
     @Override
-    public void delete(T entity) {
+    public void delete(String index, String type, String id, Class<T> clazz) {
 
     }
 }
