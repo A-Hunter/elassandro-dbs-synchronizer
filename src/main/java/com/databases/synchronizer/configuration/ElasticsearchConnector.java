@@ -29,7 +29,7 @@ public class ElasticsearchConnector {
 
     @Bean
     public Client client() throws Exception {
-
+        System.setProperty("es.set.netty.runtime.available.processors", "false");
         Settings esSettings = Settings.builder()
                 .put("cluster.name", clusterName)
                 .build();
