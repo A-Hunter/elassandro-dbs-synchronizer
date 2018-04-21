@@ -5,6 +5,7 @@ import com.databases.synchronizer.configuration.CassandraConnector;
 import com.databases.synchronizer.configuration.ElasticsearchConnector;
 import com.databases.synchronizer.entity.Person;
 import com.databases.synchronizer.repository.implemantation.CassandraRepository;
+import com.databases.synchronizer.synchronization.Synchronizer;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,9 @@ public class MainTests {
     @Autowired
     CassandraRepository cassandraRepository;
 
+    @Autowired
+    Synchronizer synchronizer;
+
     @Test
     public void contextLoads() {
     }
@@ -33,7 +37,6 @@ public class MainTests {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     @Test
@@ -56,7 +59,6 @@ public class MainTests {
         Assert.assertEquals("Zoldick", person.getLastName());
         Assert.assertEquals(75, (long) person.getAge());
         Assert.assertEquals("Assassin", person.getOccupation());
-
     }
 
     @Test
@@ -82,5 +84,10 @@ public class MainTests {
         cassandraRepository.delete("persons", "person", "5", Person.class);
         Person p = (Person) cassandraRepository.getById("id", "5", "person", Person.class);
         Assert.assertEquals(null, p);
+    }
+
+    @Test
+    public void synchronizeTest(){
+        Assert.assertTrue(synchronizer.synchronize("person", Person.class));
     }
 }

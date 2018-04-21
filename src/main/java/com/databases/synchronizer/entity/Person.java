@@ -1,5 +1,7 @@
 package com.databases.synchronizer.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -21,7 +23,12 @@ public class Person {
 
     private String occupation;
 
-    public Person(String id, String firstName, String lastName, Integer age, String occupation) {
+    @JsonCreator
+    public Person(@JsonProperty(value = "id", required = true) String id,
+                  @JsonProperty(value = "firstName") String firstName,
+                  @JsonProperty(value = "lastName") String lastName,
+                  @JsonProperty(value = "age") Integer age,
+                  @JsonProperty(value = "occupation") String occupation) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

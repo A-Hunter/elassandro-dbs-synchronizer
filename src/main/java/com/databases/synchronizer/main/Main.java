@@ -3,6 +3,7 @@ package com.databases.synchronizer.main;
 
 import com.databases.synchronizer.entity.Person;
 import com.databases.synchronizer.repository.implemantation.CassandraRepository;
+import com.databases.synchronizer.synchronization.Synchronizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,11 +12,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.List;
 
 
-@SpringBootApplication(scanBasePackages = {"com.databases.synchronizer.configuration", "com.databases.synchronizer.repository"})
+@SpringBootApplication(scanBasePackages = {"com.databases.synchronizer"})
 public class Main implements CommandLineRunner {
 
     @Autowired
     CassandraRepository cassandraRepository;
+
+    @Autowired
+    Synchronizer synchronizer;
 
     public static void main(String[] args) {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
@@ -38,6 +42,10 @@ public class Main implements CommandLineRunner {
 //        persons.stream().forEach(person ->{
 //            System.out.println(person.getId() + "-" + person.getFirstName() + "-" + person.getLastName() + "-" + person.getAge() + "-" + person.getOccupation());
 //        });
-        cassandraRepository.delete("persons", "person", "4", Person.class);
+//        cassandraRepository.delete("persons", "person", "4", Person.class);
+
+//        cassandraRepository.synchronize("person", Person.class);
+
+        synchronizer.synchronize("person", Person.class);
     }
 }

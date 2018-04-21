@@ -3,11 +3,15 @@ package com.databases.synchronizer.repository.implemantation;
 import com.databases.synchronizer.repository.Repository;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.CassandraOperations;
+import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.ScrolledPage;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 import java.util.List;
 
@@ -19,9 +23,6 @@ public class CassandraRepository<T> implements Repository<T> {
 
     @Autowired
     ElasticsearchOperations elasticsearchOperations;
-
-    @Autowired
-    ElasticsearchTemplate elasticsearchTemplate;
 
     @Override
     public T create(T entity) {
@@ -39,24 +40,6 @@ public class CassandraRepository<T> implements Repository<T> {
         IndexQuery indexQuery = new IndexQuery();
         indexQuery.setObject(entity);
         elasticsearchOperations.index(indexQuery);
-        // TODO : I need to check if the document exists in Elasticsearch
-//        SearchQuery query = new NativeSearchQueryBuilder()
-//                                .withQuery(QueryBuilders.matchAllQuery())
-//                                .withFilter()
-//                                .build();
-//        elasticsearchOperations.queryForList(query, entity.getClass());
-
-        /*
-        UpdateQuery updateQuery = new UpdateQuery();
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> map = mapper.convertValue(entity, Map.class);
-        UpdateRequest request = new UpdateRequest();
-        request.doc(map);
-        updateQuery.setUpdateRequest(request);
-//        updateQuery.setId(entity.getId());
-        updateQuery.setClazz(entity.getClass());
-        elasticsearchOperations.update(updateQuery);
-        */
         return entity;
     }
 
@@ -68,7 +51,7 @@ public class CassandraRepository<T> implements Repository<T> {
     }
 
     @Override
-    public List getAll(String table, Class<T> clazz) {
+    public List<T> getAll(String table, Class<T> clazz) {
         Select select = QueryBuilder.select().from(table);
         return cassandraOperations.select(select, clazz);
     }
@@ -79,5 +62,32 @@ public class CassandraRepository<T> implements Repository<T> {
         elasticsearchOperations.delete(clazz, id);
     }
 
+    public Integer findAll(Class<T> clazz, long scrollTime) {
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchAllQuery())
+                .build();
+        int i = 0;
+        Page<T> entities = elasticsearchOperations.startScroll(scrollTime, searchQuery, clazz);
+        if (entities != null && entities.getContent().size() > 0) {
+            String scrollId = ((ScrolledPage<T>) entities).getScrollId();
+            boolean stillHasDocuments = true;
+            while (stillHasDocuments) {
+                i += entities.getContent().size();
+                entities = scroll(scrollId, scrollTime, clazz);
+                if (entities == null || entities.getContent().size() <= 0) {
+                    stillHasDocuments = false;
+                }
+            }
+        }
+        return i;
+    }
 
+    private Page<T> scroll(String scrollId, long scrollTime, Class<T> clazz) {
+        try {
+            return elasticsearchOperations.continueScroll(scrollId, scrollTime, clazz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
