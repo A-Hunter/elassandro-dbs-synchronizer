@@ -39,9 +39,7 @@ public class CassandraRepository<T> implements Repository<T> {
     public T update(T entity) {
         cassandraOperations.update(entity);
         // TODO : Refactoring needed with insertInElasticsearch() method
-        IndexQuery indexQuery = new IndexQuery();
-        indexQuery.setObject(entity);
-        elasticsearchOperations.index(indexQuery);
+        insertInElasticsearch(entity);
         return entity;
     }
 

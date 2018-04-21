@@ -79,6 +79,11 @@ public class MainTests {
     }
 
     @Test
+    public void synchronizeTest(){
+        Assert.assertTrue(synchronizer.synchronize("person", Person.class));
+    }
+
+    @Test
     public void deleteTest() {
         cassandraRepository.create(new Person("5", "Zino", "Zoldick", 75, "Assassin"));
         cassandraRepository.delete("persons", "person", "5", Person.class);
@@ -86,8 +91,5 @@ public class MainTests {
         Assert.assertEquals(null, p);
     }
 
-    @Test
-    public void synchronizeTest(){
-        Assert.assertTrue(synchronizer.synchronize("person", Person.class));
-    }
+
 }
