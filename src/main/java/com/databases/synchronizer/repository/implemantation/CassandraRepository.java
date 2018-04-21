@@ -13,6 +13,7 @@ import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Repository
@@ -37,6 +38,7 @@ public class CassandraRepository<T> implements Repository<T> {
     @Override
     public T update(T entity) {
         cassandraOperations.update(entity);
+        // TODO : Refactoring needed with insertInElasticsearch() method
         IndexQuery indexQuery = new IndexQuery();
         indexQuery.setObject(entity);
         elasticsearchOperations.index(indexQuery);
@@ -62,24 +64,25 @@ public class CassandraRepository<T> implements Repository<T> {
         elasticsearchOperations.delete(clazz, id);
     }
 
-    public Integer findAll(Class<T> clazz, long scrollTime) {
+    public List<T> findAll(Class<T> clazz, long scrollTime) {
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilders.matchAllQuery())
                 .build();
-        int i = 0;
+
+        List<T> result = new ArrayList<>();
         Page<T> entities = elasticsearchOperations.startScroll(scrollTime, searchQuery, clazz);
         if (entities != null && entities.getContent().size() > 0) {
             String scrollId = ((ScrolledPage<T>) entities).getScrollId();
             boolean stillHasDocuments = true;
             while (stillHasDocuments) {
-                i += entities.getContent().size();
+                result.addAll(entities.getContent());
                 entities = scroll(scrollId, scrollTime, clazz);
                 if (entities == null || entities.getContent().size() <= 0) {
                     stillHasDocuments = false;
                 }
             }
         }
-        return i;
+        return result;
     }
 
     private Page<T> scroll(String scrollId, long scrollTime, Class<T> clazz) {
@@ -89,5 +92,19 @@ public class CassandraRepository<T> implements Repository<T> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void deleteFromCassandra(T entity){
+        cassandraOperations.delete(entity);
+    }
+
+    public void insertInCassandra(T entity){
+        cassandraOperations.insert(entity);
+    }
+
+    public void insertInElasticsearch(T entity){
+        IndexQuery indexQuery = new IndexQuery();
+        indexQuery.setObject(entity);
+        elasticsearchOperations.index(indexQuery);
     }
 }

@@ -6,4 +6,4 @@ CREATE TABLE person(
     occupation text
 );
 
-INSERT INTO person (id, lastname, firstname, age, occupation) VALUES ('6', 'Makunouchi', 'Ippo', 24, 'Boxer');
+INSERT INTO person (id, lastname, firstname, age, occupation) VALUES ('7', 'Ging', 'Freecss', 45, 'Hunter');
