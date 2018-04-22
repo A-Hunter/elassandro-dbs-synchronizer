@@ -3,6 +3,7 @@ package com.databases.synchronizer.main;
 
 import com.databases.synchronizer.entity.Person;
 import com.databases.synchronizer.repository.implemantation.CassandraRepository;
+import com.databases.synchronizer.scheduler.Scheduler;
 import com.databases.synchronizer.synchronization.Synchronizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +21,9 @@ public class Main implements CommandLineRunner {
 
     @Autowired
     Synchronizer synchronizer;
+
+    @Autowired
+    Scheduler scheduler;
 
     public static void main(String[] args) {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
@@ -46,6 +50,8 @@ public class Main implements CommandLineRunner {
 
 //        cassandraRepository.synchronize("person", Person.class);
 
-        synchronizer.synchronize("person", Person.class);
+//        synchronizer.synchronize("person", Person.class);
+
+        scheduler.schedule("person", Person.class);
     }
 }
