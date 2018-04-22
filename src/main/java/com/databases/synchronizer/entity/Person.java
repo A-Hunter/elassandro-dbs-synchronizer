@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 @Table("person")
 @Document(indexName = "persons", type = "person")
-public class Person {
+public class Person implements Comparable<Person> {
 
     @PrimaryKey("id")
     @Id
@@ -74,5 +74,14 @@ public class Person {
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
+    }
+
+    @Override
+    public int compareTo(Person person) {
+        return  id.compareTo(person.getId()) +
+                firstName.compareTo(person.getFirstName()) +
+                lastName.compareTo(person.getLastName()) +
+                age.compareTo(person.getAge()) +
+                occupation.compareTo(person.getOccupation());
     }
 }

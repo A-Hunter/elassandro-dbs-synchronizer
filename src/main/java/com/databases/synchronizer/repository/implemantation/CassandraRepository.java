@@ -38,7 +38,6 @@ public class CassandraRepository<T> implements Repository<T> {
     @Override
     public T update(T entity) {
         cassandraOperations.update(entity);
-        // TODO : Refactoring needed with insertInElasticsearch() method
         insertInElasticsearch(entity);
         return entity;
     }
@@ -92,15 +91,15 @@ public class CassandraRepository<T> implements Repository<T> {
         return null;
     }
 
-    public void deleteFromCassandra(T entity){
-        cassandraOperations.delete(entity);
+    public void deleteFromElasticsearch(Class<T> clazz, Object entity) {
+        elasticsearchOperations.delete(clazz, (String) entity);
     }
 
-    public void insertInCassandra(T entity){
+    public void insertInCassandra(T entity) {
         cassandraOperations.insert(entity);
     }
 
-    public void insertInElasticsearch(T entity){
+    public void insertInElasticsearch(T entity) {
         IndexQuery indexQuery = new IndexQuery();
         indexQuery.setObject(entity);
         elasticsearchOperations.index(indexQuery);
