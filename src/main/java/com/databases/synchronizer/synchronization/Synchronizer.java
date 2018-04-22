@@ -1,6 +1,7 @@
 package com.databases.synchronizer.synchronization;
 
 import com.databases.synchronizer.repository.implemantation.CassandraRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,8 @@ import java.util.Set;
 
 @Component
 public class Synchronizer<T> {
+
+    static Logger LOGGER = Logger.getLogger(Synchronizer.class.getName());
 
     @Autowired
     CassandraRepository repository;

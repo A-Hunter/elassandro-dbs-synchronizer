@@ -5,6 +5,7 @@ import com.databases.synchronizer.entity.Person;
 import com.databases.synchronizer.repository.implemantation.CassandraRepository;
 import com.databases.synchronizer.scheduler.Scheduler;
 import com.databases.synchronizer.synchronization.Synchronizer;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +16,8 @@ import java.util.List;
 
 @SpringBootApplication(scanBasePackages = {"com.databases.synchronizer"})
 public class Main implements CommandLineRunner {
+
+    static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     @Autowired
     CassandraRepository cassandraRepository;
