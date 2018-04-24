@@ -1,3 +1,6 @@
+
+use synchronizer;
+
 CREATE TABLE person(
     id text PRIMARY KEY,
     firstname text,
@@ -5,6 +8,17 @@ CREATE TABLE person(
     age int,
     occupation text
 );
+
+CREATE TABLE address(
+    id text,
+    name text,
+    street text,
+    district text,
+    city text,
+    postcode text,
+    PRIMARY KEY (id, name, street)
+);
+
 
 INSERT INTO person (id, lastname, firstname, age, occupation) VALUES ('7', 'Ging', 'Freecss', 45, 'Hunter');
 INSERT INTO person (id, lastname, firstname, age, occupation) VALUES ('4', 'Sishui', 'Uchiha', 27, 'Shinobi');

@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.CassandraOperations;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ScrolledPage;
@@ -14,7 +16,9 @@ import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @org.springframework.stereotype.Repository
@@ -31,10 +35,21 @@ public class CassandraRepository<T> implements Repository<T> {
     @Override
     public T create(T entity) {
         try {
+            String esId = "";
             cassandraOperations.insert(entity);
-            IndexQuery indexQuery = new IndexQuery();
-            indexQuery.setObject(entity);
-            elasticsearchOperations.index(indexQuery);
+            insertInElasticsearch(entity);
+//            IndexQuery indexQuery = new IndexQuery();
+//            indexQuery.setObject(entity);
+//            Field[] fields = entity.getClass().getDeclaredFields();
+//            for (Field field : fields){
+//                field.setAccessible(true);
+//                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)){
+//                    esId += field.get(entity);
+//                }
+//            }
+//            esId = esId.replaceAll("\\s+","");
+//            indexQuery.setId(esId);
+//            elasticsearchOperations.index(indexQuery);
             return entity;
         } catch (Exception e) {
             LOGGER.error("Error when trying to insert the '" + entity + "' : " + e + " - " + e.getCause());
@@ -147,8 +162,20 @@ public class CassandraRepository<T> implements Repository<T> {
 
     public void insertInElasticsearch(T entity) {
         try {
+            String esId = "";
+            Field[] fields = entity.getClass().getDeclaredFields();
+            for (Field field : fields){
+                field.setAccessible(true);
+                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)){
+                    esId += field.get(entity);
+                }
+            }
+            esId = esId.replaceAll("\\s+","");
+
+
             IndexQuery indexQuery = new IndexQuery();
             indexQuery.setObject(entity);
+            indexQuery.setId(esId);
             elasticsearchOperations.index(indexQuery);
         } catch (Exception e) {
             LOGGER.error("Error when trying to insert the '" + entity + "' : " + e + " - " + e.getCause());

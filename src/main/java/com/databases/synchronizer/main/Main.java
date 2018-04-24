@@ -1,6 +1,7 @@
 package com.databases.synchronizer.main;
 
 
+import com.databases.synchronizer.entity.Address;
 import com.databases.synchronizer.entity.Person;
 import com.databases.synchronizer.repository.implemantation.CassandraRepository;
 import com.databases.synchronizer.scheduler.Scheduler;
@@ -37,7 +38,7 @@ public class Main implements CommandLineRunner {
     public void run(String... args) throws Exception {
 //1
 //        cassandraRepository.create(new Person("1", "Isaac", "Netero", 125, "Hunter"));
-//        cassandraRepository.create(new Person("2", "Takamora", "Mamoro", 29, "Boxer"));
+        cassandraRepository.create(new Person("2", "Takamora", "Mamoro", 29, "Boxer"));
 //        cassandraRepository.create(new Person("3", "Gon", "Freecss", 15, "Hunter"));
 //2
 //        cassandraRepository.update(new Person("4", "Sishui", "Uchiha", 27, "Shinobi"));
@@ -55,6 +56,10 @@ public class Main implements CommandLineRunner {
 
 //        synchronizer.synchronize("person", Person.class);
 
-        scheduler.schedule("person", Person.class);
+//        scheduler.schedule("person", Person.class);
+
+//        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
+        cassandraRepository.create(new Address("2", "sharingan street", "2bis", "South disctrict", "Konoha village", "PC-1254"));
+
     }
 }

@@ -3,6 +3,7 @@ package com.databases.synchronizer.main;
 
 import com.databases.synchronizer.configuration.CassandraConnector;
 import com.databases.synchronizer.configuration.ElasticsearchConnector;
+import com.databases.synchronizer.entity.Address;
 import com.databases.synchronizer.entity.Person;
 import com.databases.synchronizer.repository.implemantation.CassandraRepository;
 import com.databases.synchronizer.synchronization.Synchronizer;
@@ -89,6 +90,11 @@ public class MainTests {
         cassandraRepository.delete("persons", "person", "5", Person.class);
         Person p = (Person) cassandraRepository.getById("id", "5", "person", Person.class);
         Assert.assertEquals(null, p);
+    }
+
+    @Test
+    public void createAddressTest(){
+        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
     }
 
 
