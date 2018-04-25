@@ -52,19 +52,29 @@ public class Main implements CommandLineRunner {
 //        Address address = (Address) cassandraRepository.getById("id", "2", "address", Address.class);
 //        System.out.println(address.getId() + "-" + address.getName() + "-" + address.getStreet() + "-" +address.getDistrict() + "-" +address.getCity() + "-" +address.getPostcode());
 
+        /**
         Map<String, String> ids = new HashMap<>();
         ids.put("id", "2");
         ids.put("name", "sharingan street");
         ids.put("street", "2bis");
         Address address = (Address) cassandraRepository.getById(ids, "address", Address.class);
         System.out.println(address.getId() + "-" + address.getName() + "-" + address.getStreet() + "-" +address.getDistrict() + "-" +address.getCity() + "-" +address.getPostcode());
-
+        */
 //4
-//        List<Person> persons = cassandraRepository.getAll("person", Person.class);
-//        persons.stream().forEach(person ->{
-//            System.out.println(person.getId() + "-" + person.getFirstName() + "-" + person.getLastName() + "-" + person.getAge() + "-" + person.getOccupation());
-//        });
-//        cassandraRepository.delete("persons", "person", "4", Person.class);
+       /**
+        List<Person> persons = cassandraRepository.getAll("person", Person.class);
+        persons.forEach(person ->{
+            System.out.println(person.getId() + "-" + person.getFirstName() + "-" + person.getLastName() + "-" + person.getAge() + "-" + person.getOccupation());
+        });
+
+
+        List<Address> addresses = cassandraRepository.getAll("address", Address.class);
+        addresses.forEach(address ->{
+            System.out.println(address.getId() + "-" + address.getName() + "-" + address.getStreet() + "-" +address.getDistrict() + "-" +address.getCity() + "-" +address.getPostcode());
+        });
+        */
+
+        cassandraRepository.delete(new Address("2", "sharingan street", "2bis", "East disctrict", "Hidden leaf village", "PC-6547"));
 
 //        cassandraRepository.synchronize("person", Person.class);
 

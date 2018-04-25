@@ -21,7 +21,6 @@ import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -73,10 +72,10 @@ public class CassandraRepository<T> implements Repository<T> {
                     esId += field.get(entity);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        esId = esId.replaceAll("\\s+","");
+        esId = esId.replaceAll("\\s+", "");
         cassandraOperations.update(entity);
 
         UpdateRequest req = new UpdateRequest();
@@ -91,21 +90,21 @@ public class CassandraRepository<T> implements Repository<T> {
         elasticsearchOperations.update(request);
 
 
-       /**
+        /**
 
-        T obj = getById(idName, idValue, table, clazz);
-        try {
-            cassandraOperations.update(entity);
-        } catch (Exception e) {
-            LOGGER.error("Error when trying to update the row '" + entity + "' in Cassandra : " + e + " - " + e.getCause());
-        }
-        try {
-            insertInElasticsearch(entity);
-        } catch (Exception e) {
-            cassandraOperations.update(obj);
-            LOGGER.error("Error when trying to update the document '" + entity + "' in Elasticsearch : " + e + " - " + e.getCause());
-        }
-        */
+         T obj = getById(idName, idValue, table, clazz);
+         try {
+         cassandraOperations.update(entity);
+         } catch (Exception e) {
+         LOGGER.error("Error when trying to update the row '" + entity + "' in Cassandra : " + e + " - " + e.getCause());
+         }
+         try {
+         insertInElasticsearch(entity);
+         } catch (Exception e) {
+         cassandraOperations.update(obj);
+         LOGGER.error("Error when trying to update the document '" + entity + "' in Elasticsearch : " + e + " - " + e.getCause());
+         }
+         */
         return entity;
     }
 
@@ -124,7 +123,7 @@ public class CassandraRepository<T> implements Repository<T> {
     public T getById(Map<String, String> ids, String table, Class<T> clazz) {
         try {
             Select select = QueryBuilder.select().from(table);
-            for (Map.Entry<String, String> entry : ids.entrySet()){
+            for (Map.Entry<String, String> entry : ids.entrySet()) {
                 select.where(QueryBuilder.eq(entry.getKey(), entry.getValue()));
             }
             return cassandraOperations.selectOne(select, clazz);
@@ -146,12 +145,22 @@ public class CassandraRepository<T> implements Repository<T> {
     }
 
     @Override
-    public void delete(String index, String type, String id, Class<T> clazz) {
+    public void delete(T entity) {
+        String esId = "";
         try {
-            cassandraOperations.deleteById(id, clazz);
-            elasticsearchOperations.delete(clazz, id);
+            Field[] fields = entity.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)) {
+                    esId += field.get(entity);
+                }
+            }
+            esId = esId.replaceAll("\\s+", "");
+
+            elasticsearchOperations.delete(entity.getClass(), esId);
+            cassandraOperations.delete(entity);
         } catch (Exception e) {
-            LOGGER.error("Error when trying to delete the entity with the id '" + id + "' : " + e + " - " + e.getCause());
+            LOGGER.error("Error when trying to delete the entity with the id '" + esId + "' : " + e + " - " + e.getCause());
         }
     }
 
@@ -210,13 +219,13 @@ public class CassandraRepository<T> implements Repository<T> {
         try {
             String esId = "";
             Field[] fields = entity.getClass().getDeclaredFields();
-            for (Field field : fields){
+            for (Field field : fields) {
                 field.setAccessible(true);
-                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)){
+                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)) {
                     esId += field.get(entity);
                 }
             }
-            esId = esId.replaceAll("\\s+","");
+            esId = esId.replaceAll("\\s+", "");
 
 
             IndexQuery indexQuery = new IndexQuery();

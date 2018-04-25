@@ -12,5 +12,5 @@ public interface Repository<T> {
 
     List<T> getAll(String table, Class<T> clazz);
 
-    void delete(String index, String type, String id, Class<T> clazz);
+    void delete(T entity);
 }

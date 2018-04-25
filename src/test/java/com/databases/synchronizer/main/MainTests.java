@@ -87,7 +87,7 @@ public class MainTests {
     @Test
     public void deleteTest() {
         cassandraRepository.create(new Person("5", "Zino", "Zoldick", 75, "Assassin"));
-        cassandraRepository.delete("persons", "person", "5", Person.class);
+        cassandraRepository.delete(new Person("5", "Zino", "Zoldick", 75, "Assassin"));
         Person p = (Person) cassandraRepository.getById("id", "5", "person", Person.class);
         Assert.assertEquals(null, p);
     }
