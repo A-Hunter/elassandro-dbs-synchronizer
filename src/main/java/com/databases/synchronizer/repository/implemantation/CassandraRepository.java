@@ -121,6 +121,19 @@ public class CassandraRepository<T> implements Repository<T> {
         return null;
     }
 
+    public T getById(Map<String, String> ids, String table, Class<T> clazz) {
+        try {
+            Select select = QueryBuilder.select().from(table);
+            for (Map.Entry<String, String> entry : ids.entrySet()){
+                select.where(QueryBuilder.eq(entry.getKey(), entry.getValue()));
+            }
+            return cassandraOperations.selectOne(select, clazz);
+        } catch (Exception e) {
+            LOGGER.error("Error when trying to retrieve the row from Cassandra : " + e + " - " + e.getCause());
+        }
+        return null;
+    }
+
     @Override
     public List<T> getAll(String table, Class<T> clazz) {
         try {
