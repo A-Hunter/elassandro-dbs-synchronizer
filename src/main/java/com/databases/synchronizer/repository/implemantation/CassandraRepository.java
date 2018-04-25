@@ -37,47 +37,16 @@ public class CassandraRepository<T> implements Repository<T> {
 
     @Override
     public T create(T entity) {
-        try {
-//            String esId = "";
             cassandraOperations.insert(entity);
             insertInElasticsearch(entity);
-//            IndexQuery indexQuery = new IndexQuery();
-//            indexQuery.setObject(entity);
-//            Field[] fields = entity.getClass().getDeclaredFields();
-//            for (Field field : fields){
-//                field.setAccessible(true);
-//                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)){
-//                    esId += field.get(entity);
-//                }
-//            }
-//            esId = esId.replaceAll("\\s+","");
-//            indexQuery.setId(esId);
-//            elasticsearchOperations.index(indexQuery);
             return entity;
-        } catch (Exception e) {
-            LOGGER.error("Error when trying to insert the '" + entity + "' : " + e + " - " + e.getCause());
-            return null;
-        }
     }
 
     @Override
     public T update(T entity) {
 
-        String esId = "";
-        try {
-            Field[] fields = entity.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)) {
-                    esId += field.get(entity);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        esId = esId.replaceAll("\\s+", "");
+        String esId = getElasticId(entity);
         cassandraOperations.update(entity);
-
         UpdateRequest req = new UpdateRequest();
         ObjectMapper oMapper = new ObjectMapper();
         Map<String, Object> map = oMapper.convertValue(entity, Map.class);
@@ -86,25 +55,7 @@ public class CassandraRepository<T> implements Repository<T> {
         request.setId(esId);
         request.setUpdateRequest(req);
         request.setClazz(entity.getClass());
-
         elasticsearchOperations.update(request);
-
-
-        /**
-
-         T obj = getById(idName, idValue, table, clazz);
-         try {
-         cassandraOperations.update(entity);
-         } catch (Exception e) {
-         LOGGER.error("Error when trying to update the row '" + entity + "' in Cassandra : " + e + " - " + e.getCause());
-         }
-         try {
-         insertInElasticsearch(entity);
-         } catch (Exception e) {
-         cassandraOperations.update(obj);
-         LOGGER.error("Error when trying to update the document '" + entity + "' in Elasticsearch : " + e + " - " + e.getCause());
-         }
-         */
         return entity;
     }
 
@@ -146,6 +97,12 @@ public class CassandraRepository<T> implements Repository<T> {
 
     @Override
     public void delete(T entity) {
+        String esId = getElasticId(entity);
+        elasticsearchOperations.delete(entity.getClass(), esId);
+        cassandraOperations.delete(entity);
+    }
+
+    private String getElasticId(T entity) {
         String esId = "";
         try {
             Field[] fields = entity.getClass().getDeclaredFields();
@@ -156,12 +113,10 @@ public class CassandraRepository<T> implements Repository<T> {
                 }
             }
             esId = esId.replaceAll("\\s+", "");
-
-            elasticsearchOperations.delete(entity.getClass(), esId);
-            cassandraOperations.delete(entity);
         } catch (Exception e) {
-            LOGGER.error("Error when trying to delete the entity with the id '" + esId + "' : " + e + " - " + e.getCause());
+            LOGGER.error("Error when trying to retrieve the id '" + esId + "' from the entity '"+entity+"' :: " + e + " - " + e.getCause());
         }
+        return esId;
     }
 
     public List<T> findAll(Class<T> clazz, long scrollTime) {
@@ -217,16 +172,7 @@ public class CassandraRepository<T> implements Repository<T> {
 
     public void insertInElasticsearch(T entity) {
         try {
-            String esId = "";
-            Field[] fields = entity.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)) {
-                    esId += field.get(entity);
-                }
-            }
-            esId = esId.replaceAll("\\s+", "");
-
+            String esId = getElasticId(entity);
 
             IndexQuery indexQuery = new IndexQuery();
             indexQuery.setObject(entity);
