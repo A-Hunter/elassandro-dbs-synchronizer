@@ -3,7 +3,9 @@ package com.databases.synchronizer.repository.implemantation;
 import com.databases.synchronizer.repository.Repository;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.CassandraOperations;
@@ -15,11 +17,13 @@ import org.springframework.data.elasticsearch.core.ScrolledPage;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
+import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @org.springframework.stereotype.Repository
 public class CassandraRepository<T> implements Repository<T> {
@@ -35,7 +39,7 @@ public class CassandraRepository<T> implements Repository<T> {
     @Override
     public T create(T entity) {
         try {
-            String esId = "";
+//            String esId = "";
             cassandraOperations.insert(entity);
             insertInElasticsearch(entity);
 //            IndexQuery indexQuery = new IndexQuery();
@@ -58,7 +62,36 @@ public class CassandraRepository<T> implements Repository<T> {
     }
 
     @Override
-    public T update(T entity, String idName, String idValue, String table, Class<T> clazz) {
+    public T update(T entity) {
+
+        String esId = "";
+        try {
+            Field[] fields = entity.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)) {
+                    esId += field.get(entity);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        esId = esId.replaceAll("\\s+","");
+        cassandraOperations.update(entity);
+
+        UpdateRequest req = new UpdateRequest();
+        ObjectMapper oMapper = new ObjectMapper();
+        Map<String, Object> map = oMapper.convertValue(entity, Map.class);
+        req.doc(map);
+        UpdateQuery request = new UpdateQuery();
+        request.setId(esId);
+        request.setUpdateRequest(req);
+        request.setClazz(entity.getClass());
+
+        elasticsearchOperations.update(request);
+
+
+       /**
 
         T obj = getById(idName, idValue, table, clazz);
         try {
@@ -69,10 +102,10 @@ public class CassandraRepository<T> implements Repository<T> {
         try {
             insertInElasticsearch(entity);
         } catch (Exception e) {
-            // The purpose of deleting the document
             cassandraOperations.update(obj);
             LOGGER.error("Error when trying to update the document '" + entity + "' in Elasticsearch : " + e + " - " + e.getCause());
         }
+        */
         return entity;
     }
 

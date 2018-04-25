@@ -38,8 +38,9 @@ public class Main implements CommandLineRunner {
     public void run(String... args) throws Exception {
 //1
 //        cassandraRepository.create(new Person("1", "Isaac", "Netero", 125, "Hunter"));
-        cassandraRepository.create(new Person("2", "Takamora", "Mamoro", 29, "Boxer"));
-//        cassandraRepository.create(new Person("3", "Gon", "Freecss", 15, "Hunter"));
+        cassandraRepository.update(new Person("1", "Itachi", "Uchiha", 27, "Shinobi"));
+//        cassandraRepository.create(new Person("2", "Takamora", "Mamoro", 29, "Boxer"));
+//        cassandraRepository.update(new Person("3", "Gon", "Freecss", 15, "Hunter"));
 //2
 //        cassandraRepository.update(new Person("4", "Sishui", "Uchiha", 27, "Shinobi"));
 //3
@@ -55,11 +56,15 @@ public class Main implements CommandLineRunner {
 //        cassandraRepository.synchronize("person", Person.class);
 
 //        synchronizer.synchronize("person", Person.class);
+//        synchronizer.synchronize("address", Address.class);
 
 //        scheduler.schedule("person", Person.class);
+//        scheduler.schedule("address", Address.class);
 
 //        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
-        cassandraRepository.create(new Address("2", "sharingan street", "2bis", "South disctrict", "Konoha village", "PC-1254"));
+//        cassandraRepository.create(new Address("2", "sharingan street", "2bis", "South disctrict", "Konoha village", "PC-1254"));
+//        cassandraRepository.update(new Address("2", "mangekyou sharingan street", "3bis", "East disctrict", "Konoha village", "PC-1254"),"id", "1", "person", Person.class);
+        cassandraRepository.update(new Address("2", "sharingan street", "2bis", "East disctrict", "Hidden leaf village", "PC-6547"));
 
     }
 }

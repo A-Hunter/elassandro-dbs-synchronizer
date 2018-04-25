@@ -64,7 +64,7 @@ public class MainTests {
 
     @Test
     public void updateTest() {
-        cassandraRepository.update(new Person("5", "Silver", "Zoldick", 50, "Assassin"), "id", "5", "person", Person.class);
+        cassandraRepository.update(new Person("5", "Silver", "Zoldick", 50, "Assassin"));
         Person person = (Person) cassandraRepository.getById("id", "5", "person", Person.class);
         Assert.assertEquals("5", person.getId());
         Assert.assertEquals("Silver", person.getFirstName());
