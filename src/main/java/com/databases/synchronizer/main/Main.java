@@ -42,8 +42,8 @@ public class Main implements CommandLineRunner {
 //        cassandraRepository.create(new Person("1", "Isaac", "Netero", 125, "Hunter"));
 //        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
 //2     UPDATE
-//        cassandraRepository.update(new Person("1", "Itachi", "Uchiha", 27, "Shinobi"));
-//        cassandraRepository.update(new Address("1", "hunters street", "1bis", "East disctrict", "Konoha village", "PC-1254"));
+        cassandraRepository.update(new Person("1", "Itachi", "Uchiha", 26, "Shinobi"), "person");
+        cassandraRepository.update(new Address("1", "hunters street", "1bis", "East disctrict", "Konoha village", "PC-1254"), "address");
 //3     GETBYID
 //        Person person = (Person) cassandraRepository.getById("id", "1", "person", Person.class);
 //        System.out.println(person.getId() + "-" + person.getFirstName() + "-" + person.getLastName() + "-" + person.getAge() + "-" + person.getOccupation());

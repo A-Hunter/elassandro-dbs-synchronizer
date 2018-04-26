@@ -76,7 +76,7 @@ public class Synchronizer<T> {
 
                 fromCassandra.forEach(entity -> {
                     if (!fromElasticsearch.contains(entity)) {
-                        repository.insertInElasticsearch(entity);
+                        repository.insertIntoElasticsearch(entity);
                     }
                 });
             }

@@ -12,7 +12,7 @@ public class ElasticsearchRepository<T> implements Repository<T> {
     }
 
     @Override
-    public T update(T entity) {
+    public T update(T entity, String table) {
         return null;
     }
 

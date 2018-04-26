@@ -21,6 +21,7 @@ import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,12 +39,16 @@ public class CassandraRepository<T> implements Repository<T> {
     @Override
     public T create(T entity) {
             cassandraOperations.insert(entity);
-            insertInElasticsearch(entity);
+            insertIntoElasticsearch(entity);
             return entity;
     }
 
     @Override
-    public T update(T entity) {
+    public T update(T entity, String table) {
+
+        Map<String, String> cassandraId = getCassandraId(entity);
+
+        T oldEntity = getById(cassandraId, table, (Class<T>) entity.getClass());
 
         String esId = getElasticId(entity);
         cassandraOperations.update(entity);
@@ -55,7 +60,12 @@ public class CassandraRepository<T> implements Repository<T> {
         request.setId(esId);
         request.setUpdateRequest(req);
         request.setClazz(entity.getClass());
-        elasticsearchOperations.update(request);
+        try{
+            elasticsearchOperations.update(request);
+        } catch (Exception e){
+            cassandraOperations.update(oldEntity);
+            e.printStackTrace();
+        }
         return entity;
     }
 
@@ -119,6 +129,22 @@ public class CassandraRepository<T> implements Repository<T> {
         return esId;
     }
 
+    private Map<String, String> getCassandraId(T entity) {
+        Map<String, String> cassId = new HashMap<>();
+        try {
+            Field[] fields = entity.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                if (field.isAnnotationPresent(PrimaryKeyColumn.class) || field.isAnnotationPresent(PrimaryKey.class)) {
+                    cassId.put(field.getName(),(String) field.get(entity));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error when trying to retrieve the id '" + cassId + "' from the entity '"+entity+"' :: " + e + " - " + e.getCause());
+        }
+        return cassId;
+    }
+
     public List<T> findAll(Class<T> clazz, long scrollTime) {
         try {
             SearchQuery searchQuery = new NativeSearchQueryBuilder()
@@ -170,7 +196,7 @@ public class CassandraRepository<T> implements Repository<T> {
         }
     }
 
-    public void insertInElasticsearch(T entity) {
+    public void insertIntoElasticsearch(T entity) {
         try {
             String esId = getElasticId(entity);
 
