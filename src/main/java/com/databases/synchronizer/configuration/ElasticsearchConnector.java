@@ -13,6 +13,11 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
 import java.net.InetAddress;
 
+/**
+ * Created by Ghazi Ennacer on 14/04/2018.
+ * Email: ghazi.ennacer@gmail.com
+ */
+
 @Configuration
 public class ElasticsearchConnector {
 
@@ -33,7 +38,7 @@ public class ElasticsearchConnector {
         Settings esSettings = Settings.builder()
                 .put("cluster.name", clusterName)
                 .build();
-        LOGGER.info("Connected to Elasticsearch cluster '"+clusterName+"' - '"+host+":"+port+"'.");
+        LOGGER.info("Connected to Elasticsearch cluster '" + clusterName + "' - '" + host + ":" + port + "'.");
         return new PreBuiltTransportClient(esSettings)
                 .addTransportAddress(
                         new InetSocketTransportAddress(InetAddress.getByName(host), port));

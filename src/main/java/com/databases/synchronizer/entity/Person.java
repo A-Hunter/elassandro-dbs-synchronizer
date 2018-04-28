@@ -3,13 +3,13 @@ package com.databases.synchronizer.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyClass;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
-import org.springframework.data.cassandra.core.mapping.Table;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+/**
+ * Created by Ghazi Ennacer on 14/04/2018.
+ * Email: ghazi.ennacer@gmail.com
+ */
 
 @Document(indexName = "persons", type = "person")
 public class Person implements Comparable<Person> {
@@ -81,7 +81,7 @@ public class Person implements Comparable<Person> {
 
     @Override
     public int compareTo(Person person) {
-        return  id.compareTo(person.getId()) +
+        return id.compareTo(person.getId()) +
                 firstName.compareTo(person.getFirstName()) +
                 lastName.compareTo(person.getLastName()) +
                 age.compareTo(person.getAge()) +

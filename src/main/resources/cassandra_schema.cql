@@ -21,7 +21,9 @@ CREATE TABLE address(
 
 
 INSERT INTO person (id, lastname, firstname, age, occupation) VALUES ('7', 'Ging', 'Freecss', 45, 'Hunter');
-INSERT INTO person (id, lastname, firstname, age, occupation) VALUES ('4', 'Sishui', 'Uchiha', 27, 'Shinobi');
+INSERT INTO person (id, lastname, firstname, age, occupation) VALUES ('3', 'Sishui', 'Uchiha', 27, 'Shinobi');
+
+INSERT INTO address (id, name, street, district, city, postcode) VALUES ('3', 'Assassins street', '3Bis', 'West District', 'Zoldick Ct', 'PC-5421');
 
 DELETE FROM person WHERE id='7';
 

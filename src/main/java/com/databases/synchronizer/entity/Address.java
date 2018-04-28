@@ -1,19 +1,23 @@
 package com.databases.synchronizer.entity;
 
 
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyClass;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
-import org.springframework.data.cassandra.core.mapping.Table;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
 
+/**
+ * Created by Ghazi Ennacer on 24/04/2018.
+ * Email: ghazi.ennacer@gmail.com
+ */
+
 @PrimaryKeyClass
 @Document(indexName = "addresses", type = "address")
-public class Address implements Serializable{
+public class Address implements Serializable {
 
     @PrimaryKeyColumn(name = "id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
     private String id;
@@ -28,7 +32,10 @@ public class Address implements Serializable{
     private String city;
     private String postcode;
 
-    public Address(String id, String name, String street, String district, String city, String postcode) {
+    @JsonCreator
+    public Address(@JsonProperty("id") String id, @JsonProperty("name") String name,
+                   @JsonProperty("street") String street, @JsonProperty("district") String district,
+                   @JsonProperty("city") String city, @JsonProperty("postcode") String postcode) {
         this.id = id;
         this.name = name;
         this.street = street;

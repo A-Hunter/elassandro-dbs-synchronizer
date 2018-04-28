@@ -16,6 +16,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+/**
+ * Created by Ghazi Ennacer on 14/04/2018.
+ * Email: ghazi.ennacer@gmail.com
+ */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MainTests {
@@ -81,7 +86,7 @@ public class MainTests {
 
     @Test
     public void synchronizeTest(){
-        Assert.assertTrue(synchronizer.synchronize("person", Person.class));
+        Assert.assertTrue(synchronizer.synchronize("persons","person", Person.class));
     }
 
     @Test

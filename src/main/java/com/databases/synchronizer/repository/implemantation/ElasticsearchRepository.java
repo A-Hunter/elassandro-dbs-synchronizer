@@ -4,6 +4,11 @@ import com.databases.synchronizer.repository.Repository;
 
 import java.util.List;
 
+/**
+ * Created by Ghazi Ennacer on 14/04/2018.
+ * Email: ghazi.ennacer@gmail.com
+ */
+
 public class ElasticsearchRepository<T> implements Repository<T> {
 
     @Override

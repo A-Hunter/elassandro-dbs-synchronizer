@@ -12,10 +12,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+/**
+ * Created by Ghazi Ennacer on 14/04/2018.
+ * Email: ghazi.ennacer@gmail.com
+ */
 
 @SpringBootApplication(scanBasePackages = {"com.databases.synchronizer"})
 public class Main implements CommandLineRunner {
@@ -42,8 +42,8 @@ public class Main implements CommandLineRunner {
 //        cassandraRepository.create(new Person("1", "Isaac", "Netero", 125, "Hunter"));
 //        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
 //2     UPDATE
-        cassandraRepository.update(new Person("1", "Itachi", "Uchiha", 26, "Shinobi"), "person");
-        cassandraRepository.update(new Address("1", "hunters street", "1bis", "East disctrict", "Konoha village", "PC-1254"), "address");
+//        cassandraRepository.update(new Person("1", "Itachi", "Uchiha", 26, "Shinobi"), "person");
+//        cassandraRepository.update(new Address("1", "hunters street", "1bis", "East disctrict", "Konoha village", "PC-1254"), "address");
 //3     GETBYID
 //        Person person = (Person) cassandraRepository.getById("id", "1", "person", Person.class);
 //        System.out.println(person.getId() + "-" + person.getFirstName() + "-" + person.getLastName() + "-" + person.getAge() + "-" + person.getOccupation());
@@ -69,18 +69,32 @@ public class Main implements CommandLineRunner {
 //        });
 //5     DELETE
 //        cassandraRepository.delete(new Address("1", "hunters street", "1bis", "East disctrict", "Konoha village", "PC-1254"));
+//6     Synchronize
+//        synchronizer.synchronize("person", Person.class);
+//        synchronizer.synchronize("address", Address.class);
+//7     findAllElasticsearchIds
+//        System.out.println("From Elasticsearch");
+//        List<String> addresses = cassandraRepository.findAllElasticsearchIds("addresses");
+//        addresses.forEach(id -> {
+//            System.out.println(id);
+//        });
+//8     getAllCassandraIds
+//        System.out.println("From Cassandra");
+//        List<String> result = cassandraRepository.getAllCassandraIds("address", Address.class);
+//        result.forEach(id -> {
+//            System.out.println(id);
+//        });
+//9
+//        synchronizer.synchronize("persons","person", Person.class);
+//        synchronizer.synchronize("addresses", "address", Address.class);
 
-
-
-
-
-
+        scheduler.schedule("persons", "person", Person.class);
+        scheduler.schedule("addresses", "address", Address.class);
 //        cassandraRepository.create(new Person("2", "Takamora", "Mamoro", 29, "Boxer"));
 //        cassandraRepository.update(new Person("3", "Gon", "Freecss", 15, "Hunter"));
 //        cassandraRepository.update(new Person("4", "Sishui", "Uchiha", 27, "Shinobi"));
 //        cassandraRepository.synchronize("person", Person.class);
-//        synchronizer.synchronize("person", Person.class);
-//        synchronizer.synchronize("address", Address.class);
+
 //        scheduler.schedule("person", Person.class);
 //        scheduler.schedule("address", Address.class);
 //        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));

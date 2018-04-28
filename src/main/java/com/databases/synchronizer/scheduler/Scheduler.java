@@ -9,6 +9,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+
+/**
+ * Created by Ghazi Ennacer on 22/04/2018.
+ * Email: ghazi.ennacer@gmail.com
+ */
+
+
 @Component
 public class Scheduler {
 
@@ -19,11 +26,11 @@ public class Scheduler {
 
     private final ScheduledExecutorService service = Executors.newScheduledThreadPool(2);
 
-    public void schedule(String table, Class clazz) {
+    public void schedule(String index, String table, Class clazz) {
         try {
             service.scheduleAtFixedRate(() -> {
                 try {
-                    synchronizer.synchronize(table, clazz);
+                    synchronizer.synchronize(index, table, clazz);
                 } catch (Exception e) {
                     LOGGER.error("Error when trying to synchronize data :" + e);
                 }

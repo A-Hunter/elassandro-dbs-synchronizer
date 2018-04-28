@@ -2,6 +2,11 @@ package com.databases.synchronizer.repository;
 
 import java.util.List;
 
+/**
+ * Created by Ghazi Ennacer on 14/04/2018.
+ * Email: ghazi.ennacer@gmail.com
+ */
+
 public interface Repository<T> {
 
     T create(T entity);
