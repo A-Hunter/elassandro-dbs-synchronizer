@@ -29,9 +29,6 @@ public class Synchronizer<T> {
                         ", cass : " + repository.getAll(table, clazz).size() + " }");
                 return true;
             } else if (repository.findAll(clazz, scrollTime).size() > repository.getAll(table, clazz).size()) {
-//                // TODO : This is just a note : We will consider Cassandra as a first
-//                // TODO                data storage, so the number of documents in Elasticsearch
-//                // TODO                will adjusted compared to the number of rows in Cassandra
 
                 List<String> resCass = repository.getAllCassandraIds(table, clazz);
                 List<String> resElastic = repository.findAllElasticsearchIds(index);
