@@ -34,9 +34,9 @@ At this point, you can create the respective Elasticsearch index for your Cassan
 
 `PUT cities`<br />
 `{`<br />
-&npsp;  `"mappings": {`<br />
+&lt;p&gt;  `"mappings": {`<br />
 &npsp;&npsp;      `"city": {`<br />
-&npsp;&npsp;        `"properties": {`<br />
+&npsp;&npsp;&npsp;        `"properties": {`<br />
 &npsp;&npsp;&npsp;          `"name": {`<br />
 &npsp;&npsp;&npsp;&npsp;            `"type": "text"`<br />
 &npsp;&npsp;&npsp;&npsp;          `},`<br />
