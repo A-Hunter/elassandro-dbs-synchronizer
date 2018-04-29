@@ -20,11 +20,11 @@ Before running this API, you can create a keyspace using this command : <br/>
 After that, you can create your table ; Example :
 
 `CREATE TABLE city(`<br />
-    `name text,`<br />
-    `prefecture text,`<br />
-    `country text,`<br />
-    `population bigint,`<br />
-    `PRIMARY KEY (name, prefecture)`<br />
+ &npsp;   `name text,`<br />
+ &npsp;   `prefecture text,`<br />
+ &npsp;   `country text,`<br />
+ &npsp;   `population bigint,`<br />
+ &npsp;   `PRIMARY KEY (name, prefecture)`<br />
 `);`
 
 ### Elasticsearch
@@ -34,24 +34,24 @@ At this point, you can create the respective Elasticsearch index for your Cassan
 
 `PUT cities`<br />
 `{`<br />
-  `"mappings": {`<br />
-      `"city": {`<br />
-        `"properties": {`<br />
-          `"name": {`<br />
-            `"type": "text"`<br />
-          `},`<br />
-          `"prefecture": {`<br />
-            `"type": "text"`<br />
-          `},`<br />
-          `"country": {`<br />
-            `"type": "text"`<br />
-          `},`<br />
-		  `"population": {`<br />
-            `"type": "long"`<br />
-          `}`<br />
-        `}`<br />
-      `}`<br />
-	`}`<br />
+&npsp;  `"mappings": {`<br />
+&npsp;&npsp;      `"city": {`<br />
+&npsp;&npsp;        `"properties": {`<br />
+&npsp;&npsp;&npsp;          `"name": {`<br />
+&npsp;&npsp;&npsp;&npsp;            `"type": "text"`<br />
+&npsp;&npsp;&npsp;&npsp;          `},`<br />
+&npsp;&npsp;&npsp;          `"prefecture": {`<br />
+&npsp;&npsp;&npsp;&npsp;            `"type": "text"`<br />
+&npsp;&npsp;&npsp;&npsp;          `},`<br />
+&npsp;&npsp;&npsp;          `"country": {`<br />
+&npsp;&npsp;&npsp;&npsp;            `"type": "text"`<br />
+&npsp;&npsp;&npsp;&npsp;          `},`<br />
+&npsp;&npsp;&npsp;		  `"population": {`<br />
+&npsp;&npsp;&npsp;&npsp;            `"type": "long"`<br />
+&npsp;&npsp;&npsp;          `}`<br />
+&npsp;&npsp;        `}`<br />
+&npsp;&npsp;      `}`<br />
+&npsp;&npsp;	`}`<br />
 `}`<br />
 
 #### Using CURL :
