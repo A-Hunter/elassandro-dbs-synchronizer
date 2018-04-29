@@ -26,3 +26,54 @@ After that, you can create your table ; Example :
     `population bigint,`<br />
     `PRIMARY KEY (name, prefecture)`<br />
 `);`
+
+### Elasticsearch
+
+At this point, you can create the respective Elasticsearch index for your Cassandra Table, with this command  : <br/>
+#### Using kibana :
+
+`PUT cities`<br />
+`{`<br />
+  `"mappings": {`<br />
+      `"city": {`<br />
+        `"properties": {`<br />
+          `"name": {`<br />
+            `"type": "text"`<br />
+          `},`<br />
+          `"prefecture": {`<br />
+            `"type": "text"`<br />
+          `},`<br />
+          `"country": {`<br />
+            `"type": "text"`<br />
+          `},`<br />
+		  `"population": {`<br />
+            `"type": "long"`<br />
+          `}`<br />
+        `}`<br />
+      `}`<br />
+	`}`<br />
+`}`<br />
+
+#### Using CURL :
+
+`curl -XPUT "http://localhost:9200/cities" -H 'Content-Type: application/json' -d'`<br />
+`{`<br />
+  `"mappings": {`<br />
+      `"city": {`<br />
+        `"properties": {`<br />
+          `"name": {`<br />
+            `"type": "text"`<br />
+          `},`<br />
+          `"prefecture": {`<br />
+            `"type": "text"`<br />
+          `},`<br />
+          `"country": {`<br />
+            `"type": "text"`<br />
+          `},`<br />
+		  `"population": {`<br />
+            `"type": "long"`<br />
+          `}`<br />
+        `}`<br />
+      `}`<br />
+	`}`<br />
+`}'`<br />
