@@ -20,11 +20,11 @@ Before running this API, you can create a keyspace using this command : <br/>
 After that, you can create your table ; Example :
 
 `CREATE TABLE city(`<br />
-    `name text,`<br />
-    `prefecture text,`<br />
-    `country text,`<br />
-    `population bigint,`<br />
-    `PRIMARY KEY (name, prefecture)`<br />
+    &nbsp;&nbsp;`name text,`<br />
+    &nbsp;&nbsp;`prefecture text,`<br />
+    &nbsp;&nbsp;`country text,`<br />
+    &nbsp;&nbsp;`population bigint,`<br />
+    &nbsp;&nbsp;`PRIMARY KEY (name, prefecture)`<br />
 `);`
 
 ### Elasticsearch
