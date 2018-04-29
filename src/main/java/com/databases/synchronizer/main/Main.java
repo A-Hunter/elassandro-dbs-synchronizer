@@ -2,6 +2,7 @@ package com.databases.synchronizer.main;
 
 
 import com.databases.synchronizer.entity.Address;
+import com.databases.synchronizer.entity.City;
 import com.databases.synchronizer.entity.Person;
 import com.databases.synchronizer.repository.implemantation.CassandraRepository;
 import com.databases.synchronizer.scheduler.Scheduler;
@@ -42,7 +43,7 @@ public class Main implements CommandLineRunner {
 //        cassandraRepository.create(new Person("1", "Isaac", "Netero", 125, "Hunter"));
 //        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
 //2     UPDATE
-//        cassandraRepository.update(new Person("1", "Itachi", "Uchiha", 26, "Shinobi"), "person");
+//        cassandraRepository.update(new Person("2", "Itachi", "Uchiha", 26, "Shinobi"), "person");
 //        cassandraRepository.update(new Address("1", "hunters street", "1bis", "East disctrict", "Konoha village", "PC-1254"), "address");
 //3     GETBYID
 //        Person person = (Person) cassandraRepository.getById("id", "1", "person", Person.class);
@@ -68,7 +69,7 @@ public class Main implements CommandLineRunner {
 //            System.out.println(address.getId() + "-" + address.getName() + "-" + address.getStreet() + "-" +address.getDistrict() + "-" +address.getCity() + "-" +address.getPostcode());
 //        });
 //5     DELETE
-//        cassandraRepository.delete(new Address("1", "hunters street", "1bis", "East disctrict", "Konoha village", "PC-1254"));
+        cassandraRepository.delete(new Person("2", "Itachi", "Uchiha", 26, "Shinobi"));
 //6     Synchronize
 //        synchronizer.synchronize("person", Person.class);
 //        synchronizer.synchronize("address", Address.class);
@@ -87,9 +88,13 @@ public class Main implements CommandLineRunner {
 //9
 //        synchronizer.synchronize("persons","person", Person.class);
 //        synchronizer.synchronize("addresses", "address", Address.class);
+//10
+//        scheduler.schedule("persons", "person", Person.class);
+//        scheduler.schedule("addresses", "address", Address.class);
+//        scheduler.schedule("cities", "city", City.class);
 
-        scheduler.schedule("persons", "person", Person.class);
-        scheduler.schedule("addresses", "address", Address.class);
+
+
 //        cassandraRepository.create(new Person("2", "Takamora", "Mamoro", 29, "Boxer"));
 //        cassandraRepository.update(new Person("3", "Gon", "Freecss", 15, "Hunter"));
 //        cassandraRepository.update(new Person("4", "Sishui", "Uchiha", 27, "Shinobi"));
