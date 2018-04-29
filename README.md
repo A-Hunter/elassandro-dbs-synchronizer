@@ -58,22 +58,22 @@ At this point, you can create the respective Elasticsearch index for your Cassan
 
 `curl -XPUT "http://localhost:9200/cities" -H 'Content-Type: application/json' -d'`<br />
 `{`<br />
-  `"mappings": {`<br />
-      `"city": {`<br />
-        `"properties": {`<br />
-          `"name": {`<br />
-            `"type": "text"`<br />
-          `},`<br />
-          `"prefecture": {`<br />
-            `"type": "text"`<br />
-          `},`<br />
-          `"country": {`<br />
-            `"type": "text"`<br />
-          `},`<br />
-		  `"population": {`<br />
-            `"type": "long"`<br />
-          `}`<br />
-        `}`<br />
-      `}`<br />
-	`}`<br />
+  &nbsp;&nbsp;`"mappings": {`<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;`"city": {`<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"properties": {`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"name": {`<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"type": "text"`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`},`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"prefecture": {`<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"type": "text"`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`},`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"country": {`<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"type": "text"`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`},`<br />
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"population": {`<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"type": "long"`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`}`<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`}`<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;`}`<br />
+	&nbsp;&nbsp;`}`<br />
 `}'`<br />
