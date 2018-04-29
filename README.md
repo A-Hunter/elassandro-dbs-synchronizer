@@ -20,11 +20,11 @@ Before running this API, you can create a keyspace using this command : <br/>
 After that, you can create your table ; Example :
 
 `CREATE TABLE city(`<br />
-    &nbsp;&nbsp;`name text,`<br />
-    &nbsp;&nbsp;`prefecture text,`<br />
-    &nbsp;&nbsp;`country text,`<br />
-    &nbsp;&nbsp;`population bigint,`<br />
-    &nbsp;&nbsp;`PRIMARY KEY (name, prefecture)`<br />
+    &nbsp;&nbsp; `name text,`<br />
+    &nbsp;&nbsp; `prefecture text,`<br />
+    &nbsp;&nbsp; `country text,`<br />
+    &nbsp;&nbsp; `population bigint,`<br />
+    &nbsp;&nbsp; `PRIMARY KEY (name, prefecture)`<br />
 `);`
 
 ### Elasticsearch
@@ -34,25 +34,25 @@ At this point, you can create the respective Elasticsearch index for your Cassan
 
 `PUT cities`<br />
 `{`<br />
-  `"mappings": {`<br />
-      `"city": {`<br />
-        `"properties": {`<br />
-          `"name": {`<br />
-            `"type": "text"`<br />
-          `},`<br />
-          `"prefecture": {`<br />
-            `"type": "text"`<br />
-          `},`<br />
-          `"country": {`<br />
-            `"type": "text"`<br />
-          `},`<br />
-		  `"population": {`<br />
-            `"type": "long"`<br />
-          `}`<br />
-        `}`<br />
-      `}`<br />
-	`}`<br />
-`}`<br />
+  &nbsp;&nbsp;`"mappings": {`<br />
+      &nbsp;&nbsp;`"city": {`<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;`"properties": {`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"name": {`<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"type": "text"`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`},`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"prefecture": {`<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"type": "text"`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`},`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"country": {`<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"type": "text"`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`},`<br />
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"population": {`<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"type": "long"`<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`}`<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`}`<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;`}`<br />
+	&nbsp;&nbsp;`}`<br />
+&nbsp;&nbsp;`}`<br />
 
 #### Using CURL :
 
