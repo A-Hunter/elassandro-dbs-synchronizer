@@ -1,6 +1,6 @@
 package com.databases.synchronizer.synchronization;
 
-import com.databases.synchronizer.repository.implemantation.CassandraRepository;
+import com.databases.synchronizer.repository.implemantation.ElassandroRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class Synchronizer<T> {
     static Logger LOGGER = Logger.getLogger(Synchronizer.class.getName());
 
     @Autowired
-    CassandraRepository repository;
+    ElassandroRepository repository;
 
     public Boolean synchronize(String index, String table, Class<T> clazz) {
 

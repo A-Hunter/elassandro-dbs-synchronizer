@@ -4,7 +4,7 @@ package com.databases.synchronizer.main;
 import com.databases.synchronizer.entity.Address;
 import com.databases.synchronizer.entity.City;
 import com.databases.synchronizer.entity.Person;
-import com.databases.synchronizer.repository.implemantation.CassandraRepository;
+import com.databases.synchronizer.repository.implemantation.ElassandroRepository;
 import com.databases.synchronizer.scheduler.Scheduler;
 import com.databases.synchronizer.synchronization.Synchronizer;
 import org.apache.log4j.Logger;
@@ -24,7 +24,7 @@ public class Main implements CommandLineRunner {
     static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     @Autowired
-    CassandraRepository cassandraRepository;
+    ElassandroRepository elassandroRepository;
 
     @Autowired
     Synchronizer synchronizer;
@@ -40,48 +40,48 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //1     CREATE
-//        cassandraRepository.create(new Person("1", "Isaac", "Netero", 125, "Hunter"));
-//        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
+//        elassandroRepository.create(new Person("1", "Isaac", "Netero", 125, "Hunter"));
+//        elassandroRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
 //2     UPDATE
-//        cassandraRepository.update(new Person("2", "Itachi", "Uchiha", 26, "Shinobi"), "person");
-//        cassandraRepository.update(new Address("1", "hunters street", "1bis", "East disctrict", "Konoha village", "PC-1254"), "address");
+//        elassandroRepository.update(new Person("2", "Itachi", "Uchiha", 26, "Shinobi"), "person");
+//        elassandroRepository.update(new Address("1", "hunters street", "1bis", "East disctrict", "Konoha village", "PC-1254"), "address");
 //3     GETBYID
-//        Person person = (Person) cassandraRepository.getById("id", "1", "person", Person.class);
+//        Person person = (Person) elassandroRepository.getById("id", "1", "person", Person.class);
 //        System.out.println(person.getId() + "-" + person.getFirstName() + "-" + person.getLastName() + "-" + person.getAge() + "-" + person.getOccupation());
-//        Address address = (Address) cassandraRepository.getById("id", "1", "address", Address.class);
+//        Address address = (Address) elassandroRepository.getById("id", "1", "address", Address.class);
 //        System.out.println(address.getId() + "-" + address.getName() + "-" + address.getStreet() + "-" +address.getDistrict() + "-" +address.getCity() + "-" +address.getPostcode());
 //
 //         Map<String, String> ids = new HashMap<>();
 //         ids.put("id", "1");
 //         ids.put("name", "hunters street");
 //         ids.put("street", "1bis");
-//         Address addr = (Address) cassandraRepository.getById(ids, "address", Address.class);
+//         Address addr = (Address) elassandroRepository.getById(ids, "address", Address.class);
 //         System.out.println(addr.getId() + "-" + addr.getName() + "-" + addr.getStreet() + "-" +addr.getDistrict() + "-" +addr.getCity() + "-" +addr.getPostcode());
 //4       GETALL
-//        List<Person> persons = cassandraRepository.getAll("person", Person.class);
+//        List<Person> persons = elassandroRepository.getAll("person", Person.class);
 //        persons.forEach(person ->{
 //            System.out.println(person.getId() + "-" + person.getFirstName() + "-" + person.getLastName() + "-" + person.getAge() + "-" + person.getOccupation());
 //        });
 //
 //
-//        List<Address> addresses = cassandraRepository.getAll("address", Address.class);
+//        List<Address> addresses = elassandroRepository.getAll("address", Address.class);
 //        addresses.forEach(address ->{
 //            System.out.println(address.getId() + "-" + address.getName() + "-" + address.getStreet() + "-" +address.getDistrict() + "-" +address.getCity() + "-" +address.getPostcode());
 //        });
 //5     DELETE
-        cassandraRepository.delete(new Person("2", "Itachi", "Uchiha", 26, "Shinobi"));
+//        elassandroRepository.delete(new Person("2", "Itachi", "Uchiha", 26, "Shinobi"));
 //6     Synchronize
 //        synchronizer.synchronize("person", Person.class);
 //        synchronizer.synchronize("address", Address.class);
 //7     findAllElasticsearchIds
 //        System.out.println("From Elasticsearch");
-//        List<String> addresses = cassandraRepository.findAllElasticsearchIds("addresses");
+//        List<String> addresses = elassandroRepository.findAllElasticsearchIds("addresses");
 //        addresses.forEach(id -> {
 //            System.out.println(id);
 //        });
 //8     getAllCassandraIds
 //        System.out.println("From Cassandra");
-//        List<String> result = cassandraRepository.getAllCassandraIds("address", Address.class);
+//        List<String> result = elassandroRepository.getAllCassandraIds("address", Address.class);
 //        result.forEach(id -> {
 //            System.out.println(id);
 //        });
@@ -89,22 +89,22 @@ public class Main implements CommandLineRunner {
 //        synchronizer.synchronize("persons","person", Person.class);
 //        synchronizer.synchronize("addresses", "address", Address.class);
 //10
-//        scheduler.schedule("persons", "person", Person.class);
-//        scheduler.schedule("addresses", "address", Address.class);
-//        scheduler.schedule("cities", "city", City.class);
+        scheduler.schedule("persons", "person", Person.class);
+        scheduler.schedule("addresses", "address", Address.class);
+        scheduler.schedule("cities", "city", City.class);
 
 
 
-//        cassandraRepository.create(new Person("2", "Takamora", "Mamoro", 29, "Boxer"));
-//        cassandraRepository.update(new Person("3", "Gon", "Freecss", 15, "Hunter"));
-//        cassandraRepository.update(new Person("4", "Sishui", "Uchiha", 27, "Shinobi"));
-//        cassandraRepository.synchronize("person", Person.class);
+//        elassandroRepository.create(new Person("2", "Takamora", "Mamoro", 29, "Boxer"));
+//        elassandroRepository.update(new Person("3", "Gon", "Freecss", 15, "Hunter"));
+//        elassandroRepository.update(new Person("4", "Sishui", "Uchiha", 27, "Shinobi"));
+//        elassandroRepository.synchronize("person", Person.class);
 
 //        scheduler.schedule("person", Person.class);
 //        scheduler.schedule("address", Address.class);
-//        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
-//        cassandraRepository.create(new Address("2", "sharingan street", "2bis", "South disctrict", "Konoha village", "PC-1254"));
-//        cassandraRepository.update(new Address("2", "mangekyou sharingan street", "3bis", "East disctrict", "Konoha village", "PC-1254"),"id", "1", "person", Person.class);
-//        cassandraRepository.update(new Address("2", "sharingan street", "2bis", "East disctrict", "Hidden leaf village", "PC-6547"));
+//        elassandroRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
+//        elassandroRepository.create(new Address("2", "sharingan street", "2bis", "South disctrict", "Konoha village", "PC-1254"));
+//        elassandroRepository.update(new Address("2", "mangekyou sharingan street", "3bis", "East disctrict", "Konoha village", "PC-1254"),"id", "1", "person", Person.class);
+//        elassandroRepository.update(new Address("2", "sharingan street", "2bis", "East disctrict", "Hidden leaf village", "PC-6547"));
     }
 }

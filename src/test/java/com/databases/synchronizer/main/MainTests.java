@@ -5,7 +5,7 @@ import com.databases.synchronizer.configuration.CassandraConnector;
 import com.databases.synchronizer.configuration.ElasticsearchConnector;
 import com.databases.synchronizer.entity.Address;
 import com.databases.synchronizer.entity.Person;
-import com.databases.synchronizer.repository.implemantation.CassandraRepository;
+import com.databases.synchronizer.repository.implemantation.ElassandroRepository;
 import com.databases.synchronizer.synchronization.Synchronizer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,7 +26,7 @@ import java.util.List;
 public class MainTests {
 
     @Autowired
-    CassandraRepository cassandraRepository;
+    ElassandroRepository elassandroRepository;
 
     @Autowired
     Synchronizer synchronizer;
@@ -58,8 +58,8 @@ public class MainTests {
 
     @Test
     public void createAndGetByIdTest() {
-        cassandraRepository.create(new Person("5", "Zino", "Zoldick", 75, "Assassin"));
-        Person person = (Person) cassandraRepository.getById("id", "5", "person", Person.class);
+        elassandroRepository.create(new Person("5", "Zino", "Zoldick", 75, "Assassin"));
+        Person person = (Person) elassandroRepository.getById("id", "5", "person", Person.class);
         Assert.assertEquals("5", person.getId());
         Assert.assertEquals("Zino", person.getFirstName());
         Assert.assertEquals("Zoldick", person.getLastName());
@@ -69,8 +69,8 @@ public class MainTests {
 
     @Test
     public void updateTest() {
-        cassandraRepository.update(new Person("5", "Silver", "Zoldick", 50, "Assassin"), "person");
-        Person person = (Person) cassandraRepository.getById("id", "5", "person", Person.class);
+        elassandroRepository.update(new Person("5", "Silver", "Zoldick", 50, "Assassin"), "person");
+        Person person = (Person) elassandroRepository.getById("id", "5", "person", Person.class);
         Assert.assertEquals("5", person.getId());
         Assert.assertEquals("Silver", person.getFirstName());
         Assert.assertEquals("Zoldick", person.getLastName());
@@ -80,7 +80,7 @@ public class MainTests {
 
     @Test
     public void getAllTest() {
-        List<Person> persons = cassandraRepository.getAll("person", Person.class);
+        List<Person> persons = elassandroRepository.getAll("person", Person.class);
         Assert.assertNotEquals(null, persons.size());
     }
 
@@ -91,15 +91,15 @@ public class MainTests {
 
     @Test
     public void deleteTest() {
-        cassandraRepository.create(new Person("5", "Zino", "Zoldick", 75, "Assassin"));
-        cassandraRepository.delete(new Person("5", "Zino", "Zoldick", 75, "Assassin"));
-        Person p = (Person) cassandraRepository.getById("id", "5", "person", Person.class);
+        elassandroRepository.create(new Person("5", "Zino", "Zoldick", 75, "Assassin"));
+        elassandroRepository.delete(new Person("5", "Zino", "Zoldick", 75, "Assassin"));
+        Person p = (Person) elassandroRepository.getById("id", "5", "person", Person.class);
         Assert.assertEquals(null, p);
     }
 
     @Test
     public void createAddressTest(){
-        cassandraRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
+        elassandroRepository.create(new Address("1", "hunters street", "1bis", "North disctrict", "York city", "PC-9651"));
     }
 
 
