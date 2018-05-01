@@ -122,9 +122,13 @@ public class ElassandroRepository<T> implements Repository<T> {
 
     @Override
     public void delete(T entity) {
-        String esId = getElasticId(entity);
-        elasticsearchOperations.delete(entity.getClass(), esId);
-        cassandraOperations.delete(entity);
+        try {
+            String esId = getElasticId(entity);
+            elasticsearchOperations.delete(entity.getClass(), esId);
+            cassandraOperations.delete(entity);
+        } catch (Exception e) {
+            LOGGER.error("Error when trying to delete the entity '" + entity + "' : " + e + " - " + e.getCause());
+        }
     }
 
     public String getElasticId(T entity) {
@@ -264,7 +268,12 @@ public class ElassandroRepository<T> implements Repository<T> {
     }
 
     public T findFromElasticsearchById(String index, String type, String id) {
-        GetResponse response = elasticsearchOperations.getClient().prepareGet(index, type, id).get();
-        return (T) response.getSource();
+        try {
+            GetResponse response = elasticsearchOperations.getClient().prepareGet(index, type, id).get();
+            return (T) response.getSource();
+        } catch (Exception e) {
+            LOGGER.error("Error when trying to retrieve the id from the Elasticsearch index '" + index + "' : " + e + " - " + e.getCause());
+        }
+        return null;
     }
 }
