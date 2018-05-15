@@ -1,4 +1,4 @@
-# Elassandro Databases Synchronizer
+# Elassandro Databases Synchronizer - Basic Synchronizer
 
 Elassandro is a basic databases synchronizer, that guarantees data synchronization between Cassandra and Elasticsearch.
 
