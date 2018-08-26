@@ -4,14 +4,24 @@ package com.databases.synchronizer.main;
 import com.databases.synchronizer.entity.Address;
 import com.databases.synchronizer.entity.City;
 import com.databases.synchronizer.entity.Person;
+import com.databases.synchronizer.jms.Messenger;
+import com.databases.synchronizer.repository.implemantation.CassandraRepository;
 import com.databases.synchronizer.repository.implemantation.ElassandroRepository;
+import com.databases.synchronizer.route.JmsRoute;
 import com.databases.synchronizer.scheduler.Scheduler;
 import com.databases.synchronizer.synchronization.Synchronizer;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.component.jms.JmsComponent;
+import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import javax.jms.ConnectionFactory;
 
 /**
  * Created by Ghazi Ennacer on 14/04/2018.
@@ -31,6 +41,12 @@ public class Main implements CommandLineRunner {
 
     @Autowired
     Scheduler scheduler;
+
+    @Autowired
+    Messenger messenger;
+
+    @Autowired
+    CassandraRepository cassandraRepository;
 
     public static void main(String[] args) {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
@@ -89,11 +105,22 @@ public class Main implements CommandLineRunner {
 //        synchronizer.synchronize("persons","person", Person.class);
 //        synchronizer.synchronize("addresses", "address", Address.class);
 //10
-        scheduler.schedule("persons", "person", Person.class);
-        scheduler.schedule("addresses", "address", Address.class);
-        scheduler.schedule("cities", "city", City.class);
+//        scheduler.schedule("persons", "person", Person.class);
+//        scheduler.schedule("addresses", "address", Address.class);
+//        scheduler.schedule("cities", "city", City.class);
 
+//11 JMS
+//    messenger.send("INPUTQUEUE.D", new Person("10", "Hisoka","Morow",29, "Hunter").toMap());
 
+        CamelContext context = new DefaultCamelContext();
+        context.addRoutes(new JmsRoute());
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://0.0.0.0:61616");
+        context.addComponent("jms", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
+        ProducerTemplate template = context.createProducerTemplate();
+        context.start();
+        template.sendBody("activemq:queue:inbound.endpoint", new Person("10", "Hisoka","Morow",29, "Hunter"));
+//12
+//    cassandraRepository.create(new Person("10", "Hisoka","Morow",29, "Hunter"));
 
 //        elassandroRepository.create(new Person("2", "Takamora", "Mamoro", 29, "Boxer"));
 //        elassandroRepository.update(new Person("3", "Gon", "Freecss", 15, "Hunter"));

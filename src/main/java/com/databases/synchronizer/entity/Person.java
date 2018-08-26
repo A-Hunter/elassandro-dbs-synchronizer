@@ -6,13 +6,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Ghazi Ennacer on 14/04/2018.
  * Email: ghazi.ennacer@gmail.com
  */
 
 @Document(indexName = "persons", type = "person")
-public class Person implements Comparable<Person> {
+public class Person implements Comparable<Person>, Serializable {
 
     @PrimaryKey("id")
     @Id
@@ -86,5 +90,14 @@ public class Person implements Comparable<Person> {
                 lastName.compareTo(person.getLastName()) +
                 age.compareTo(person.getAge()) +
                 occupation.compareTo(person.getOccupation());
+    }
+    public Map<String, Object> toMap(){
+        Map<String, Object> person = new HashMap<>();
+        person.put("id", this.id);
+        person.put("firstName", this.firstName);
+        person.put("lastName", this.lastName);
+        person.put("age", this.age);
+        person.put("occupation", this.occupation);
+        return person;
     }
 }
