@@ -77,3 +77,9 @@ At this point, you can create the respective Elasticsearch index for your Cassan
       &nbsp;&nbsp;&nbsp;&nbsp;`}`<br />
 	&nbsp;&nbsp;`}`<br />
 `}'`<br />
+
+###### Note :
+The work on this branch is not completed ... You may take a look at the basic synchronizer (complete) : https://github.com/ghazi-naceur/elassandro-dbs-synchronizer/tree/elassandro-basic-synchronizer . <br/>
+The aim of this branch (advanced synchronizer/master branch) is to integrate Apache Camel and ActiveMQ in order to provide an Asynchronous CRUD in distinct routes. <br/>
+In order to provide a synchronization between Cassandra and Elasticsearch, I recommend using Cassandra Trigger : <br/>
+https://github.com/ghazi-naceur/cassandra-trigger (forked from gardeup)
